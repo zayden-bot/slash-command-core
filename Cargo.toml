@@ -5,4 +5,14 @@ edition = "2021"
 
 [dependencies]
 async-trait = "*"
-serenity = { version = "*", default-features = false }
+
+[dependencies.serenity]
+version = "*"
+default-features = false
+features = [
+    "rustls_backend",
+    "client",
+    "gateway",
+    "builder",
+]
+
