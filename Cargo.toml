@@ -9,10 +9,4 @@ async-trait = "*"
 [dependencies.serenity]
 version = "*"
 default-features = false
-features = [
-    "rustls_backend",
-    "client",
-    "gateway",
-    "builder",
-]
-
+features = ["rustls_backend", "client", "gateway", "builder"]
