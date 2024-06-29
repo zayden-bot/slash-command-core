@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-async-trait = "*"
+async-trait = { version = "*", default-features = false }
+sqlx = { version = "*", default-features = false, features = ["postgres"] }
 
 [dependencies.serenity]
 version = "*"

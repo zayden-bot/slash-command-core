@@ -1,10 +1,11 @@
-use std::collections::HashMap;
-use serenity::all::{Context, CreateCommand, CommandInteraction, ResolvedOption, ResolvedValue};
 use async_trait::async_trait;
+use serenity::all::{CommandInteraction, Context, CreateCommand, ResolvedOption, ResolvedValue};
+use sqlx::PgPool;
+use std::collections::HashMap;
 
 #[async_trait]
 pub trait SlashCommand<E: std::error::Error> {
-    async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), E>;
+    async fn run(ctx: &Context, interaction: &CommandInteraction, pool: &PgPool) -> Result<(), E>;
 
     fn register() -> CreateCommand;
 }
