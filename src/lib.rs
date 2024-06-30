@@ -9,6 +9,10 @@ pub trait SlashCommand<E: std::error::Error> {
     fn register() -> CreateCommand;
 }
 
+pub trait ErrorResponse {
+    fn to_response(&self) -> String;
+}
+
 pub fn parse_options<'a>(
     options: &'a Vec<ResolvedOption<'_>>,
 ) -> HashMap<&'a str, &'a ResolvedValue<'a>> {
