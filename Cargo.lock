@@ -845,8 +845,7 @@ dependencies = [
 [[package]]
 name = "serenity"
 version = "0.12.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "880a04106592d0a8f5bdacb1d935889bfbccb4a14f7074984d9cd857235d34ac"
+source = "git+https://github.com/serenity-rs/serenity?branch=current#060ee3281b44f7e532f3ea5863c5df57340e1ec9"
 dependencies = [
  "arrayvec",
  "async-trait",
@@ -888,14 +887,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8f92a496fb766b417c996b9c5e57daf2f7ad3b0bebe1ccfca4856390e3d3bb67"
 dependencies = [
  "autocfg",
-]
-
-[[package]]
-name = "slash-command-core"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "serenity",
 ]
 
 [[package]]
@@ -1504,6 +1495,14 @@ checksum = "524e57b2c537c0f9b1e69f1965311ec12182b4122e45035b1508cd24d2adadb1"
 dependencies = [
  "cfg-if",
  "windows-sys 0.48.0",
+]
+
+[[package]]
+name = "zayden-core"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "serenity",
 ]
 
 [[package]]
