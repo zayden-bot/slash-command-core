@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use serenity::all::{
-    ActionRow, ActionRowComponent, CommandInteraction, Context, CreateCommand, InputText,
-    ResolvedOption, ResolvedValue,
+    ActionRow, ActionRowComponent, CommandInteraction, Context, CreateCommand, ResolvedOption,
+    ResolvedValue,
 };
 use std::collections::HashMap;
 
@@ -28,13 +28,16 @@ pub fn parse_options<'a>(
     parsed_options
 }
 
-pub fn parse_modal_data(components: &[ActionRow]) -> HashMap<&str, &InputText> {
+pub fn parse_modal_data(components: &[ActionRow]) -> HashMap<&str, &str> {
     components
         .iter()
         .flat_map(|action_row| action_row.components.iter())
         .filter_map(|component| {
             if let ActionRowComponent::InputText(input) = component {
-                Some((input.custom_id.as_str(), input))
+                input
+                    .value
+                    .as_deref()
+                    .map(|value| (input.custom_id.as_str(), value))
             } else {
                 None
             }
