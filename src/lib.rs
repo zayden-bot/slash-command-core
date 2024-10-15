@@ -28,13 +28,13 @@ pub fn parse_options<'a>(
     parsed_options
 }
 
-pub fn parse_modal_data(components: &[ActionRow]) -> Vec<&str> {
+pub fn parse_modal_data(components: &[ActionRow]) -> HashMap<&str, &str> {
     components
         .iter()
         .flat_map(|action_row| action_row.components.iter())
         .filter_map(|component| {
             if let ActionRowComponent::InputText(input) = component {
-                input.value.as_deref()
+                input.label.as_deref().zip(input.value.as_deref())
             } else {
                 None
             }
