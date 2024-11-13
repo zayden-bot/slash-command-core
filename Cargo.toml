@@ -7,8 +7,6 @@ edition = "2021"
 async-trait = { version = "*", default-features = false }
 
 [dependencies.serenity]
-git = "https://github.com/serenity-rs/serenity"
-branch = "current"
-# version = "*"
+version = "*"
 default-features = false
 features = ["rustls_backend", "client", "gateway", "builder"]
