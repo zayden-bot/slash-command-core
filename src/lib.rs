@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 use serenity::all::{
-    ActionRow, ActionRowComponent, CommandInteraction, Context, CreateCommand, ResolvedOption,
-    ResolvedValue,
+    ActionRow, ActionRowComponent, CommandInteraction, Context, CreateCommand, Ready,
+    ResolvedOption, ResolvedValue,
 };
 use std::collections::HashMap;
 
@@ -9,7 +9,7 @@ use std::collections::HashMap;
 pub trait SlashCommand<E: std::error::Error> {
     async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), E>;
 
-    fn register() -> CreateCommand;
+    fn register(ctx: &Context, ready: &Ready) -> Result<CreateCommand, E>;
 }
 
 pub trait ErrorResponse {
