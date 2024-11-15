@@ -12,6 +12,11 @@ pub trait SlashCommand<E: std::error::Error> {
     fn register(ctx: &Context, ready: &Ready) -> Result<CreateCommand, E>;
 }
 
+#[async_trait]
+pub trait Autocomplete<E: std::error::Error> {
+    async fn autocomplete(ctx: &Context, interaction: &CommandInteraction) -> Result<(), E>;
+}
+
 pub trait ErrorResponse {
     fn to_response(&self) -> String;
 }
