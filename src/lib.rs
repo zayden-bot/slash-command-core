@@ -7,7 +7,11 @@ use std::collections::HashMap;
 
 #[async_trait]
 pub trait SlashCommand<E: std::error::Error> {
-    async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), E>;
+    async fn run(
+        ctx: &Context,
+        interaction: &CommandInteraction,
+        options: Vec<ResolvedOption<'_>>,
+    ) -> Result<(), E>;
 
     fn register(ctx: &Context, ready: &Ready) -> Result<CreateCommand, E>;
 }
