@@ -33,6 +33,32 @@ pub fn parse_options<'a>(
     parsed_options
 }
 
+fn get_option_str(options: &[ResolvedOption<'_>]) -> String {
+    let mut s = String::new();
+
+    for option in options {
+        s.push(' ');
+        s.push_str(option.name);
+
+        match &option.value {
+            ResolvedValue::SubCommandGroup(sub_options) => {
+                s.push_str(&get_option_str(sub_options));
+            }
+            ResolvedValue::SubCommand(sub_options) => {
+                for sub_option in sub_options {
+                    s.push(' ');
+                    s.push_str(sub_option.name);
+                    s.push_str(": ");
+                    s.push_str(&format!("{:?}", sub_option.value));
+                }
+            }
+            _ => {}
+        }
+    }
+
+    s
+}
+
 pub fn parse_modal_data(components: &[ActionRow]) -> HashMap<&str, &str> {
     components
         .iter()
