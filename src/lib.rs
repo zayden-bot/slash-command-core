@@ -33,7 +33,7 @@ pub fn parse_options<'a>(
     parsed_options
 }
 
-fn get_option_str(options: &[ResolvedOption<'_>]) -> String {
+pub fn get_option_str(options: &[ResolvedOption<'_>]) -> String {
     let mut s = String::new();
 
     for option in options {
