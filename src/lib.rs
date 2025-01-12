@@ -26,7 +26,7 @@ pub trait ErrorResponse {
 }
 
 pub fn parse_options<'a>(
-    options: &'a Vec<ResolvedOption<'_>>,
+    options: &'a [ResolvedOption<'_>],
 ) -> HashMap<&'a str, &'a ResolvedValue<'a>> {
     let mut parsed_options = HashMap::with_capacity(options.len());
 
