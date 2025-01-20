@@ -32,7 +32,6 @@ pub trait Autocomplete<E: Error> {
 #[async_trait]
 pub trait Component<E: Error> {
     async fn run<Db: Database>(
-        &self,
         ctx: &Context,
         interaction: &ComponentInteraction,
         pool: Pool<Db>,
