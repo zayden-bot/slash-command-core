@@ -54,7 +54,7 @@ pub trait MessageCommand<E: Error> {
 }
 
 pub trait ErrorResponse {
-    fn to_response<'a>(&self) -> &'a str;
+    fn to_response(&self) -> &str;
 }
 
 pub fn parse_options<'a>(
