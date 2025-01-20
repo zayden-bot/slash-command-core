@@ -93,15 +93,16 @@ pub fn get_option_str(options: &[ResolvedOption<'_>]) -> String {
     s
 }
 
-pub fn parse_modal_data(
-    components: impl IntoIterator<Item = ActionRow>,
-) -> HashMap<String, String> {
+pub fn parse_modal_data(components: &[ActionRow]) -> HashMap<&str, &str> {
     components
-        .into_iter()
-        .flat_map(|action_row| action_row.components)
+        .iter()
+        .flat_map(|action_row| &action_row.components)
         .filter_map(|component| {
             if let ActionRowComponent::InputText(input) = component {
-                input.value.map(|value| (input.custom_id, value))
+                input
+                    .value
+                    .as_deref()
+                    .map(|value| (input.custom_id.as_str(), value))
             } else {
                 None
             }
