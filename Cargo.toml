@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 async-trait = { version = "*", default-features = false }
+sqlx = { version = "*", default-features = false }
 
 [dependencies.serenity]
 version = "*"

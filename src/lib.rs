@@ -1,40 +1,67 @@
+use std::collections::HashMap;
+use std::error::Error;
+
 use async_trait::async_trait;
 use serenity::all::{
-    ActionRow, ActionRowComponent, CommandInteraction, Context, CreateCommand, Ready,
-    ResolvedOption, ResolvedValue,
+    ActionRow, ActionRowComponent, AutocompleteOption, CommandInteraction, ComponentInteraction,
+    Context, CreateCommand, Message, ModalInteraction, Ready, ResolvedOption, ResolvedValue,
 };
-use std::collections::HashMap;
+use sqlx::{Database, Pool};
 
 #[async_trait]
-pub trait SlashCommand<E: std::error::Error> {
+pub trait SlashCommand<E: Error, Db: Database> {
     async fn run(
         ctx: &Context,
         interaction: &CommandInteraction,
         options: Vec<ResolvedOption<'_>>,
+        pool: Pool<Db>,
     ) -> Result<(), E>;
 
     fn register(ctx: &Context, ready: &Ready) -> Result<CreateCommand, E>;
 }
 
 #[async_trait]
-pub trait Autocomplete<E: std::error::Error> {
-    async fn autocomplete(ctx: &Context, interaction: &CommandInteraction) -> Result<(), E>;
+pub trait Autocomplete<E: Error> {
+    async fn autocomplete(
+        ctx: &Context,
+        interaction: &CommandInteraction,
+        option: AutocompleteOption<'_>,
+    ) -> Result<(), E>;
+}
+
+pub trait Component<E: Error, Db: Database> {
+    fn run(
+        &self,
+        ctx: &Context,
+        interaction: &ComponentInteraction,
+        pool: Pool<Db>,
+    ) -> Result<(), E>;
+}
+
+pub trait Modal<E: Error, Db: Database> {
+    fn run(
+        ctx: &Context,
+        interaction: &ModalInteraction,
+        components: &[ActionRow],
+        pool: Pool<Db>,
+    ) -> Result<(), E>;
+}
+
+pub trait MessageCommand<E: Error, Db: Database> {
+    fn run(ctx: &Context, message: &Message, pool: Pool<Db>) -> Result<(), E>;
 }
 
 pub trait ErrorResponse {
-    fn to_response(&self) -> String;
+    fn to_response<'a>(&self) -> &'a str;
 }
 
 pub fn parse_options<'a>(
-    options: &'a [ResolvedOption<'_>],
-) -> HashMap<&'a str, &'a ResolvedValue<'a>> {
-    let mut parsed_options = HashMap::with_capacity(options.len());
-
-    for option in options {
-        parsed_options.insert(option.name, &option.value);
-    }
-
-    parsed_options
+    options: impl IntoIterator<Item = ResolvedOption<'a>>,
+) -> HashMap<&'a str, ResolvedValue<'a>> {
+    options
+        .into_iter()
+        .map(|option| (option.name, option.value))
+        .collect()
 }
 
 pub fn get_option_str(options: &[ResolvedOption<'_>]) -> String {
@@ -63,16 +90,15 @@ pub fn get_option_str(options: &[ResolvedOption<'_>]) -> String {
     s
 }
 
-pub fn parse_modal_data(components: &[ActionRow]) -> HashMap<&str, &str> {
+pub fn parse_modal_data(
+    components: impl IntoIterator<Item = ActionRow>,
+) -> HashMap<String, String> {
     components
-        .iter()
-        .flat_map(|action_row| action_row.components.iter())
+        .into_iter()
+        .flat_map(|action_row| action_row.components)
         .filter_map(|component| {
             if let ActionRowComponent::InputText(input) = component {
-                input
-                    .value
-                    .as_deref()
-                    .map(|value| (input.custom_id.as_str(), value))
+                input.value.map(|value| (input.custom_id, value))
             } else {
                 None
             }
