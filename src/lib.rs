@@ -29,8 +29,9 @@ pub trait Autocomplete<E: Error> {
     ) -> Result<(), E>;
 }
 
+#[async_trait]
 pub trait Component<E: Error, Db: Database> {
-    fn run(
+    async fn run(
         &self,
         ctx: &Context,
         interaction: &ComponentInteraction,
@@ -38,8 +39,9 @@ pub trait Component<E: Error, Db: Database> {
     ) -> Result<(), E>;
 }
 
+#[async_trait]
 pub trait Modal<E: Error, Db: Database> {
-    fn run(
+    async fn run(
         ctx: &Context,
         interaction: &ModalInteraction,
         components: &[ActionRow],
@@ -47,8 +49,9 @@ pub trait Modal<E: Error, Db: Database> {
     ) -> Result<(), E>;
 }
 
+#[async_trait]
 pub trait MessageCommand<E: Error, Db: Database> {
-    fn run(ctx: &Context, message: &Message, pool: Pool<Db>) -> Result<(), E>;
+    async fn run(ctx: &Context, message: &Message, pool: Pool<Db>) -> Result<(), E>;
 }
 
 pub trait ErrorResponse {
