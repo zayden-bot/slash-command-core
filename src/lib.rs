@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::error::Error;
 
 use async_trait::async_trait;
 use serenity::all::{
@@ -9,7 +8,7 @@ use serenity::all::{
 use sqlx::{Database, Pool};
 
 #[async_trait]
-pub trait SlashCommand<E: Error> {
+pub trait SlashCommand<E: std::error::Error> {
     async fn run<Db: Database>(
         ctx: &Context,
         interaction: &CommandInteraction,
@@ -21,7 +20,7 @@ pub trait SlashCommand<E: Error> {
 }
 
 #[async_trait]
-pub trait Autocomplete<E: Error> {
+pub trait Autocomplete<E: std::error::Error> {
     async fn autocomplete(
         ctx: &Context,
         interaction: &CommandInteraction,
@@ -30,7 +29,7 @@ pub trait Autocomplete<E: Error> {
 }
 
 #[async_trait]
-pub trait Component<E: Error> {
+pub trait Component<E: std::error::Error> {
     async fn run<Db: Database>(
         ctx: &Context,
         interaction: &ComponentInteraction,
@@ -39,7 +38,7 @@ pub trait Component<E: Error> {
 }
 
 #[async_trait]
-pub trait Modal<E: Error> {
+pub trait Modal<E: std::error::Error> {
     async fn run<Db: Database>(
         ctx: &Context,
         interaction: &ModalInteraction,
@@ -49,12 +48,24 @@ pub trait Modal<E: Error> {
 }
 
 #[async_trait]
-pub trait MessageCommand<E: Error> {
+pub trait MessageCommand<E: std::error::Error> {
     async fn run<Db: Database>(ctx: &Context, message: &Message, pool: Pool<Db>) -> Result<(), E>;
 }
 
 pub trait ErrorResponse {
     fn to_response(&self) -> &str;
+}
+
+pub enum Error {
+    MissingGuildId,
+}
+
+impl ErrorResponse for Error {
+    fn to_response(&self) -> &str {
+        match self {
+            Error::MissingGuildId => "This command can only be used within a server.",
+        }
+    }
 }
 
 pub fn parse_options<'a>(
