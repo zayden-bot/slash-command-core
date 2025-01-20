@@ -9,8 +9,8 @@ use serenity::all::{
 use sqlx::{Database, Pool};
 
 #[async_trait]
-pub trait SlashCommand<E: Error, Db: Database> {
-    async fn run(
+pub trait SlashCommand<E: Error> {
+    async fn run<Db: Database>(
         ctx: &Context,
         interaction: &CommandInteraction,
         options: Vec<ResolvedOption<'_>>,
@@ -30,8 +30,8 @@ pub trait Autocomplete<E: Error> {
 }
 
 #[async_trait]
-pub trait Component<E: Error, Db: Database> {
-    async fn run(
+pub trait Component<E: Error> {
+    async fn run<Db: Database>(
         &self,
         ctx: &Context,
         interaction: &ComponentInteraction,
@@ -40,8 +40,8 @@ pub trait Component<E: Error, Db: Database> {
 }
 
 #[async_trait]
-pub trait Modal<E: Error, Db: Database> {
-    async fn run(
+pub trait Modal<E: Error> {
+    async fn run<Db: Database>(
         ctx: &Context,
         interaction: &ModalInteraction,
         components: &[ActionRow],
@@ -50,8 +50,8 @@ pub trait Modal<E: Error, Db: Database> {
 }
 
 #[async_trait]
-pub trait MessageCommand<E: Error, Db: Database> {
-    async fn run(ctx: &Context, message: &Message, pool: Pool<Db>) -> Result<(), E>;
+pub trait MessageCommand<E: Error> {
+    async fn run<Db: Database>(ctx: &Context, message: &Message, pool: Pool<Db>) -> Result<(), E>;
 }
 
 pub trait ErrorResponse {
