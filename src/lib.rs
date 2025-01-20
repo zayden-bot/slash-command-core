@@ -13,7 +13,7 @@ pub trait SlashCommand<E: std::error::Error> {
         ctx: &Context,
         interaction: &CommandInteraction,
         options: Vec<ResolvedOption<'_>>,
-        pool: Pool<Db>,
+        pool: &Pool<Db>,
     ) -> Result<(), E>;
 
     fn register(ctx: &Context, ready: &Ready) -> Result<CreateCommand, E>;
@@ -33,7 +33,7 @@ pub trait Component<E: std::error::Error> {
     async fn run<Db: Database>(
         ctx: &Context,
         interaction: &ComponentInteraction,
-        pool: Pool<Db>,
+        pool: &Pool<Db>,
     ) -> Result<(), E>;
 }
 
@@ -43,13 +43,13 @@ pub trait Modal<E: std::error::Error> {
         ctx: &Context,
         interaction: &ModalInteraction,
         components: &[ActionRow],
-        pool: Pool<Db>,
+        pool: &Pool<Db>,
     ) -> Result<(), E>;
 }
 
 #[async_trait]
 pub trait MessageCommand<E: std::error::Error> {
-    async fn run<Db: Database>(ctx: &Context, message: &Message, pool: Pool<Db>) -> Result<(), E>;
+    async fn run<Db: Database>(ctx: &Context, message: &Message, pool: &Pool<Db>) -> Result<(), E>;
 }
 
 pub trait ErrorResponse {
