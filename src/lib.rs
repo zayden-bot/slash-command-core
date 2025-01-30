@@ -8,8 +8,8 @@ use serenity::all::{
 use sqlx::{Database, Pool};
 
 #[async_trait]
-pub trait SlashCommand<E: std::error::Error> {
-    async fn run<Db: Database>(
+pub trait SlashCommand<E: std::error::Error, Db: Database> {
+    async fn run(
         ctx: &Context,
         interaction: &CommandInteraction,
         options: Vec<ResolvedOption<'_>>,
@@ -29,8 +29,8 @@ pub trait Autocomplete<E: std::error::Error> {
 }
 
 #[async_trait]
-pub trait Component<E: std::error::Error> {
-    async fn run<Db: Database>(
+pub trait Component<E: std::error::Error, Db: Database> {
+    async fn run(
         ctx: &Context,
         interaction: &ComponentInteraction,
         pool: &Pool<Db>,
@@ -38,8 +38,8 @@ pub trait Component<E: std::error::Error> {
 }
 
 #[async_trait]
-pub trait Modal<E: std::error::Error> {
-    async fn run<Db: Database>(
+pub trait Modal<E: std::error::Error, Db: Database> {
+    async fn run(
         ctx: &Context,
         interaction: &ModalInteraction,
         components: &[ActionRow],
@@ -48,8 +48,8 @@ pub trait Modal<E: std::error::Error> {
 }
 
 #[async_trait]
-pub trait MessageCommand<E: std::error::Error> {
-    async fn run<Db: Database>(ctx: &Context, message: &Message, pool: &Pool<Db>) -> Result<(), E>;
+pub trait MessageCommand<E: std::error::Error, Db: Database> {
+    async fn run(ctx: &Context, message: &Message, pool: &Pool<Db>) -> Result<(), E>;
 }
 
 pub trait ErrorResponse {
