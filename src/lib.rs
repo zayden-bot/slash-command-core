@@ -58,12 +58,14 @@ pub trait ErrorResponse {
 
 pub enum Error {
     MissingGuildId,
+    NotInteractionAuthor,
 }
 
 impl ErrorResponse for Error {
     fn to_response(&self) -> &str {
         match self {
             Error::MissingGuildId => "This command can only be used within a server.",
+            Error::NotInteractionAuthor => "You are not the author of this interaction.",
         }
     }
 }
