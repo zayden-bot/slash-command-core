@@ -95,7 +95,12 @@ pub fn get_option_str(options: &[ResolvedOption<'_>]) -> String {
                     s.push(' ');
                     s.push_str(sub_option.name);
                     s.push_str(": ");
-                    s.push_str(&format!("{:?}", sub_option.value));
+                    match sub_option.value {
+                        ResolvedValue::User(user, _) => {
+                            s.push_str(&format!("User({{id: {}, name: {}}})", user.id, user.name))
+                        }
+                        _ => s.push_str(&format!("{:?}", sub_option.value)),
+                    }
                 }
             }
             _ => {}
