@@ -85,7 +85,13 @@ pub fn get_option_str(options: &[ResolvedOption<'_>]) -> String {
     for option in options {
         s.push(' ');
         s.push_str(option.name);
-        s.push_str(": ");
+
+        if !matches!(
+            option.value,
+            ResolvedValue::SubCommandGroup(_) | ResolvedValue::SubCommand(_)
+        ) {
+            s.push_str(": ");
+        }
 
         match &option.value {
             ResolvedValue::SubCommandGroup(sub_options) => {
