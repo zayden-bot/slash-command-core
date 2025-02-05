@@ -85,25 +85,19 @@ pub fn get_option_str(options: &[ResolvedOption<'_>]) -> String {
     for option in options {
         s.push(' ');
         s.push_str(option.name);
+        s.push_str(": ");
 
         match &option.value {
             ResolvedValue::SubCommandGroup(sub_options) => {
                 s.push_str(&get_option_str(sub_options));
             }
             ResolvedValue::SubCommand(sub_options) => {
-                for sub_option in sub_options {
-                    s.push(' ');
-                    s.push_str(sub_option.name);
-                    s.push_str(": ");
-                    match sub_option.value {
-                        ResolvedValue::User(user, _) => {
-                            s.push_str(&format!("User({{id: {}, name: {}}})", user.id, user.name))
-                        }
-                        _ => s.push_str(&format!("{:?}", sub_option.value)),
-                    }
-                }
+                s.push_str(&get_option_str(sub_options));
             }
-            _ => {}
+            ResolvedValue::User(user, _) => {
+                s.push_str(&format!("User({{id: {}, name: {}}})", user.id, user.name))
+            }
+            _ => s.push_str(&format!("{:?}", option.value)),
         }
     }
 
