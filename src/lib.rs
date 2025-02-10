@@ -57,6 +57,7 @@ pub trait ErrorResponse {
 }
 
 pub enum Error {
+    UnknownInteraction,
     MissingGuildId,
     NotInteractionAuthor,
 }
@@ -64,6 +65,9 @@ pub enum Error {
 impl ErrorResponse for Error {
     fn to_response(&self) -> &str {
         match self {
+            Error::UnknownInteraction => {
+                "An error occurred while processing the interaction. Please try again."
+            }
             Error::MissingGuildId => "This command can only be used within a server.",
             Error::NotInteractionAuthor => "You are not the author of this interaction.",
         }
