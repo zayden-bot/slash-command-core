@@ -20,11 +20,12 @@ pub trait SlashCommand<E: std::error::Error, Db: Database> {
 }
 
 #[async_trait]
-pub trait Autocomplete<E: std::error::Error> {
+pub trait Autocomplete<E: std::error::Error, Db: Database> {
     async fn autocomplete(
         ctx: &Context,
         interaction: &CommandInteraction,
         option: AutocompleteOption<'_>,
+        pool: &Pool<Db>,
     ) -> Result<(), E>;
 }
 
