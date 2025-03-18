@@ -1,13 +1,14 @@
 [package]
 name = "zayden-core"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
 async-trait = { version = "*", default-features = false }
 sqlx = { version = "*", default-features = false }
-
-[dependencies.serenity]
-version = "*"
-default-features = false
-features = ["rustls_backend", "client", "gateway", "builder"]
+serenity = { version = "*", default-features = false, features = [
+    "rustls_backend",
+    "model",
+    "client",
+    "gateway",
+] }
