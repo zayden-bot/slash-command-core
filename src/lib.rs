@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use async_trait::async_trait;
 use serenity::all::{
     ActionRow, ActionRowComponent, AutocompleteOption, CommandInteraction, ComponentInteraction,
-    Context, CreateCommand, Message, ModalInteraction, Ready, ResolvedOption, ResolvedValue,
+    Context, CreateCommand, Message, ModalInteraction, ResolvedOption, ResolvedValue,
 };
 use sqlx::{Database, Pool};
 
@@ -16,7 +16,7 @@ pub trait SlashCommand<E: std::error::Error, Db: Database> {
         pool: &Pool<Db>,
     ) -> Result<(), E>;
 
-    fn register(ctx: &Context, ready: &Ready) -> Result<CreateCommand, E>;
+    fn register(ctx: &Context) -> Result<CreateCommand, E>;
 }
 
 #[async_trait]
