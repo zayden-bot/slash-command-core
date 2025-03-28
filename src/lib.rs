@@ -1,3 +1,5 @@
+pub mod events;
+
 use std::collections::HashMap;
 
 use async_trait::async_trait;
