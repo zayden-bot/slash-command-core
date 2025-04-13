@@ -56,23 +56,29 @@ pub trait MessageCommand<E: std::error::Error, Db: Database> {
 }
 
 pub trait ErrorResponse {
-    fn to_response(&self) -> &str;
+    fn as_response(&self) -> &str;
 }
 
 pub enum Error {
-    UnknownInteraction,
+    UnknownInteraction(serenity::Error),
+    PoolTimedOut(sqlx::Error),
     MissingGuildId,
     NotInteractionAuthor,
 }
 
-impl ErrorResponse for Error {
-    fn to_response(&self) -> &str {
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            Error::UnknownInteraction => {
+            Error::UnknownInteraction(_) => write!(
+                f,
                 "An error occurred while processing the interaction. Please try again."
-            }
-            Error::MissingGuildId => "This command can only be used within a server.",
-            Error::NotInteractionAuthor => "You are not the author of this interaction.",
+            ),
+            Error::PoolTimedOut(_) => write!(
+                f,
+                "An internal error occurred while accessing data. Please try again shortly."
+            ),
+            Error::MissingGuildId => write!(f, "This command can only be used within a server."),
+            Error::NotInteractionAuthor => write!(f, "You are not the author of this interaction."),
         }
     }
 }
