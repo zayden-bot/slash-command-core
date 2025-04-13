@@ -56,8 +56,8 @@ pub trait MessageCommand<E: std::error::Error, Db: Database> {
 }
 
 pub enum Error {
-    UnknownInteraction(serenity::Error),
-    PoolTimedOut(sqlx::Error),
+    UnknownInteraction,
+    PoolTimedOut,
     MissingGuildId,
     NotInteractionAuthor,
 }
@@ -65,11 +65,11 @@ pub enum Error {
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            Error::UnknownInteraction(_) => write!(
+            Error::UnknownInteraction => write!(
                 f,
                 "An error occurred while processing the interaction. Please try again."
             ),
-            Error::PoolTimedOut(_) => write!(
+            Error::PoolTimedOut => write!(
                 f,
                 "An internal error occurred while accessing data. Please try again shortly."
             ),
