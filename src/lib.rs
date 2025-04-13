@@ -55,10 +55,6 @@ pub trait MessageCommand<E: std::error::Error, Db: Database> {
     async fn run(ctx: &Context, message: &Message, pool: &Pool<Db>) -> Result<(), E>;
 }
 
-pub trait ErrorResponse {
-    fn as_response(&self) -> &str;
-}
-
 pub enum Error {
     UnknownInteraction(serenity::Error),
     PoolTimedOut(sqlx::Error),
