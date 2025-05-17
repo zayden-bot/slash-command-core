@@ -1,4 +1,6 @@
+mod error;
 pub mod events;
+pub use error::Error;
 
 use std::collections::HashMap;
 
@@ -53,30 +55,6 @@ pub trait Modal<E: std::error::Error, Db: Database> {
 #[async_trait]
 pub trait MessageCommand<E: std::error::Error, Db: Database> {
     async fn run(ctx: &Context, message: &Message, pool: &Pool<Db>) -> Result<(), E>;
-}
-
-pub enum Error {
-    UnknownInteraction,
-    PoolTimedOut,
-    MissingGuildId,
-    NotInteractionAuthor,
-}
-
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            Error::UnknownInteraction => write!(
-                f,
-                "An error occurred while processing the interaction. Please try again."
-            ),
-            Error::PoolTimedOut => write!(
-                f,
-                "An internal error occurred while accessing data. Please try again shortly."
-            ),
-            Error::MissingGuildId => write!(f, "This command can only be used within a server."),
-            Error::NotInteractionAuthor => write!(f, "You are not the author of this interaction."),
-        }
-    }
 }
 
 pub fn parse_options<'a>(
