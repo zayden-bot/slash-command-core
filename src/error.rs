@@ -4,7 +4,7 @@ pub enum Error {
     NotInteractionAuthor,
     //region: Serenity
     UnknownInteraction,
-    ChannelDeleted(serenity::Error),
+    ChannelDeleted,
     //endregion
     //region: Sqlx
     PoolTimedOut,
@@ -20,7 +20,7 @@ impl std::fmt::Display for Error {
                 f,
                 "An error occurred while processing the interaction. Please try again."
             ),
-            Error::ChannelDeleted(_) => write!(f, "Channel already deleted"),
+            Error::ChannelDeleted => write!(f, "Channel already deleted"),
             Error::PoolTimedOut => write!(
                 f,
                 "An internal error occurred while accessing data. Please try again shortly."
