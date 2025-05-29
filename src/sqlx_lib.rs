@@ -4,7 +4,7 @@ use sqlx::{Database, Pool};
 
 #[async_trait]
 pub trait TableRow {
-    async fn save<Db: Database>(&self, _pool: Pool<Db>) -> sqlx::Result<AnyQueryResult> {
+    async fn save<Db: Database>(&self, _pool: &Pool<Db>) -> sqlx::Result<AnyQueryResult> {
         unimplemented!()
     }
 }
