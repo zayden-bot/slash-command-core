@@ -1,9 +1,3 @@
-mod error;
-pub use error::Error;
-
-pub mod cache;
-pub mod events;
-
 use std::collections::HashMap;
 
 use async_trait::async_trait;
@@ -12,6 +6,16 @@ use serenity::all::{
     Context, CreateCommand, Message, ModalInteraction, ResolvedOption, ResolvedValue,
 };
 use sqlx::{Database, Pool};
+
+pub mod cache;
+
+mod error;
+pub use error::Error;
+
+pub mod events;
+
+pub mod sqlx_lib;
+pub use sqlx_lib::TableRow;
 
 #[async_trait]
 pub trait SlashCommand<E: std::error::Error, Db: Database> {
