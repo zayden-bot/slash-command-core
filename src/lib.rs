@@ -1,6 +1,8 @@
 mod error;
-pub mod events;
 pub use error::Error;
+
+pub mod cache;
+pub mod events;
 
 use std::collections::HashMap;
 
