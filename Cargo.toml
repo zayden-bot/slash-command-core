@@ -5,10 +5,11 @@ edition = "2024"
 
 [dependencies]
 async-trait = { version = "*", default-features = false }
-sqlx = { version = "*", default-features = false, features = ["any"] }
+cron = { version = "*", default-features = false }
 serenity = { version = "*", default-features = false, features = [
     "rustls_backend",
-    "model",
     "client",
     "gateway",
+    "builder",
 ] }
+sqlx = { version = "*", default-features = false, features = ["any"] }
