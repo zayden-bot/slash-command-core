@@ -10,7 +10,7 @@ pub type ActionFn<Db, E> = Box<
 
 pub struct CronJob<Db: Database, E: Error> {
     pub schedule: Schedule,
-    action_fn: ActionFn<Db, E>,
+    pub action_fn: ActionFn<Db, E>,
 }
 
 impl<Db, E> CronJob<Db, E>
