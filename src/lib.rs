@@ -16,6 +16,8 @@ mod error;
 pub use error::Error;
 
 pub mod events;
+pub mod format_num;
+pub use format_num::FormatNum;
 
 pub mod sqlx_lib;
 pub use sqlx_lib::TableRow;

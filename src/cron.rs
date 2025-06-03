@@ -1,9 +1,9 @@
-use std::{pin::Pin, str::FromStr};
+use std::pin::Pin;
+use std::str::FromStr;
 
 use cron::Schedule;
 use serenity::all::Context;
 use sqlx::{Database, Pool};
-
 pub type ActionFn<Db> =
     Box<dyn Fn(Context, Pool<Db>) -> Pin<Box<dyn Future<Output = ()> + Send>> + Send + Sync>;
 
