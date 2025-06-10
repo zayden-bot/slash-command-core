@@ -1,12 +1,15 @@
 use std::pin::Pin;
 use std::str::FromStr;
+use std::sync::Arc;
 
 use cron::Schedule;
 use serenity::all::Context;
 use sqlx::{Database, Pool};
-pub type ActionFn<Db> =
-    Box<dyn Fn(Context, Pool<Db>) -> Pin<Box<dyn Future<Output = ()> + Send>> + Send + Sync>;
 
+pub type ActionFn<Db> =
+    Arc<dyn Fn(Context, Pool<Db>) -> Pin<Box<dyn Future<Output = ()> + Send>> + Send + Sync>;
+
+#[derive(Clone)]
 pub struct CronJob<Db: Database> {
     pub schedule: Schedule,
     pub action_fn: ActionFn<Db>,
@@ -38,7 +41,7 @@ where
             pinned_future
         };
 
-        Box::new(action_closure)
+        Arc::new(action_closure)
     }
 
     pub fn set_action<F, Fut>(mut self, f: F) -> Self
