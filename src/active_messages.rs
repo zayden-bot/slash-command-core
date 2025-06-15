@@ -1,19 +1,24 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::ops::{Deref, DerefMut};
 
-use serenity::all::{Context, Guild, GuildId, MessageId, UserId};
+use serenity::all::MessageId;
 use serenity::prelude::TypeMapKey;
 
-pub struct ActiveMessages(HashSet<MessageId>);
+#[derive(Default)]
+pub struct ActiveMessages(HashMap<String, MessageId>);
 
 impl ActiveMessages {
-    pub fn new() -> Self {
-        Self(HashSet::new())
+    pub fn insert(&mut self, cmd: impl Into<String>, id: impl Into<MessageId>) {
+        self.0.insert(cmd.into(), id.into());
+    }
+
+    pub fn check(&self, cmd: &str) -> bool {
+        self.0.contains_key(cmd)
     }
 }
 
 impl Deref for ActiveMessages {
-    type Target = HashSet<MessageId>;
+    type Target = HashMap<String, MessageId>;
 
     fn deref(&self) -> &Self::Target {
         &self.0
