@@ -4,6 +4,8 @@ use std::ops::{Deref, DerefMut};
 use serenity::all::MessageId;
 use serenity::prelude::TypeMapKey;
 
+use crate::Error;
+
 #[derive(Default)]
 pub struct ActiveMessages(HashMap<String, MessageId>);
 
@@ -12,8 +14,12 @@ impl ActiveMessages {
         self.0.insert(cmd.into(), id.into());
     }
 
-    pub fn check(&self, cmd: &str) -> bool {
-        self.0.contains_key(cmd)
+    pub fn check(&self, cmd: &str) -> Result<(), Error> {
+        if self.0.contains_key(cmd) {
+            Err(Error::MessageConflict)
+        } else {
+            Ok(())
+        }
     }
 }
 

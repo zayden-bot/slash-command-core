@@ -2,6 +2,8 @@
 pub enum Error {
     MissingGuildId,
     NotInteractionAuthor,
+
+    MessageConflict,
     //region: Serenity
     UnknownInteraction,
     ChannelDeleted,
@@ -16,6 +18,10 @@ impl std::fmt::Display for Error {
         match self {
             Error::MissingGuildId => write!(f, "This command can only be used within a server."),
             Error::NotInteractionAuthor => write!(f, "You are not the author of this interaction."),
+            Error::MessageConflict => write!(
+                f,
+                "Command is already awaiting interaction. Please respond to previous command first."
+            ),
             Error::UnknownInteraction => write!(
                 f,
                 "An error occurred while processing the interaction. Please try again."
