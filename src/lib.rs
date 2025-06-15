@@ -7,6 +7,9 @@ use serenity::all::{
 };
 use sqlx::{Database, Pool};
 
+pub mod active_messages;
+pub use active_messages::ActiveMessages;
+
 pub mod cache;
 
 pub mod cron;
