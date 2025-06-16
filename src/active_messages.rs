@@ -10,8 +10,8 @@ use crate::Error;
 pub struct ActiveMessages(HashSet<(String, UserId)>);
 
 impl ActiveMessages {
-    pub fn insert(&mut self, cmd: impl Into<String>, id: impl Into<UserId>) {
-        self.0.insert((cmd.into(), id.into()));
+    pub fn insert(&mut self, cmd: impl Into<String>, id: impl Into<UserId>) -> bool {
+        self.0.insert((cmd.into(), id.into()))
     }
 
     pub fn check(&self, cmd: impl Into<String>, id: impl Into<UserId>) -> Result<(), Error> {
@@ -20,6 +20,10 @@ impl ActiveMessages {
         } else {
             Ok(())
         }
+    }
+
+    pub fn remove(&mut self, cmd: impl Into<String>, id: impl Into<UserId>) -> bool {
+        self.0.remove(&(cmd.into(), id.into()))
     }
 }
 
