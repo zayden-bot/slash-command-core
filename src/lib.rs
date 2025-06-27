@@ -13,7 +13,7 @@ pub use active_messages::ActiveMessages;
 pub mod cache;
 
 pub mod cron;
-pub use cron::{ActionFn, CronJob};
+pub use cron::{ActionFn, CronJob, CronJobs};
 
 mod error;
 pub use error::Error;
