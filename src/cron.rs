@@ -1,9 +1,10 @@
-use std::pin::Pin;
 use std::str::FromStr;
 use std::sync::Arc;
+use std::{marker::PhantomData, pin::Pin};
 
 use cron::Schedule;
 use serenity::all::Context;
+use serenity::prelude::TypeMapKey;
 use sqlx::{Database, Pool};
 
 pub type ActionFn<Db> =
@@ -52,4 +53,10 @@ where
         self.action_fn = Self::action_fn(f);
         self
     }
+}
+
+pub struct CronJobs<Db: Database>(PhantomData<Db>);
+
+impl<Db: Database> TypeMapKey for CronJobs<Db> {
+    type Value = Vec<CronJob<Db>>;
 }
